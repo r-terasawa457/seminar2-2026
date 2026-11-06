@@ -281,12 +281,13 @@ def show_feature_maps(model, image, transform, device, class_names=None,
              for s in (*stages, "global_pool")]
     model.eval()
     x = transform(image.convert("RGB")).unsqueeze(0).to(device)
-    probs = model(x).softmax(dim=1)[0].cpu()
+    logits = model(x)[0].cpu()
+    probs = logits.softmax(dim=0)
     for h in hooks:
         h.remove()
 
-    fig = plt.figure(figsize=((n + 1) * 1.7, (len(stages) + 2) * 1.8))
-    grid = fig.add_gridspec(len(stages) + 2, n + 1)
+    fig = plt.figure(figsize=((n + 1) * 1.7, (len(stages) + 3) * 1.8))
+    grid = fig.add_gridspec(len(stages) + 3, n + 1)
     for r, s in enumerate(stages):
         row = [fig.add_subplot(grid[r, col]) for col in range(n + 1)]
         row[0].imshow(to_image(x[0]))
@@ -299,22 +300,26 @@ def show_feature_maps(model, image, transform, device, class_names=None,
         c, h, w = maps[s].shape
         row[0].set_ylabel(f"{s}\n{h}x{w}\n{c} maps", fontsize=9)
 
-    # 分類ヘッド：特徴マップをチャネルごとに平均したベクトル → 全結合と softmax でクラスごとの確率
+    # 分類ヘッド：特徴マップをチャネルごとに平均したベクトル → 全結合でスコア → softmax で確率
     feature = maps["global_pool"]
-    for r, (values, label) in enumerate([(feature, f"global_pool\n{len(feature)}-dim\nvector"),
-                                         (probs, f"fc + softmax\n{len(probs)} classes\nprobability")],
-                                        start=len(stages)):
+    rows = [(feature, f"global_pool\n{len(feature)}-dim\nvector", "channel"),
+            (logits, f"fc\n{len(logits)} classes\nscore (logits)", "class"),
+            (probs, f"softmax\n{len(probs)} classes\nprobability", "class")]
+    for r, (values, label, xlabel) in enumerate(rows, start=len(stages)):
         ax_label = fig.add_subplot(grid[r, 0])
         ax_label.axis("off")
         ax_label.text(1.0, 0.5, label, ha="right", va="center", fontsize=9, transform=ax_label.transAxes)
         ax = fig.add_subplot(grid[r, 1:])
         ax.bar(range(len(values)), values.numpy(), width=1.0)
         ax.set_xlim(-0.5, len(values) - 0.5)
-        ax.set_xlabel("channel" if values is feature else "class")
-    if class_names is not None:  # 確率の高い3クラスに名前を付ける
-        for i in probs.topk(3).indices:
-            ax.annotate(class_names[i], (int(i), probs[i].item()), textcoords="offset points",
-                        xytext=(0, 3), ha="center", fontsize=8)
-        ax.set_ylim(0, min(1.0, probs.max().item() * 1.25))
+        ax.set_xlabel(xlabel)
+        if xlabel == "class":
+            ax.axhline(0, color="black", linewidth=0.5)
+            if class_names is not None:  # 確率（スコア）の高い3クラスに名前を付ける
+                for i in probs.topk(3).indices:
+                    ax.annotate(class_names[i], (int(i), values[i].item()), textcoords="offset points",
+                                xytext=(0, 3), ha="center", fontsize=8)
+                low, high = values.min().item(), values.max().item()
+                ax.set_ylim(min(0, low * 1.1), high + (high - min(0, low)) * 0.25)
     plt.tight_layout()
     plt.show()
