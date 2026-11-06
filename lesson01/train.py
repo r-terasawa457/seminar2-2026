@@ -9,16 +9,14 @@
     python train.py --no-pretrained
 """
 import argparse
-import copy
 import json
-import time
 from pathlib import Path
 
 import torch
 import torch.nn as nn
 
 from data import build_transforms, load_splits, make_loader
-from engine import evaluate, train_one_epoch
+from engine import evaluate, fit
 from models import build_model
 
 
@@ -60,30 +58,15 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
 
     # ② 学習を進める
-    history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
-    best_acc, best_state = 0.0, None
-    for epoch in range(1, args.epochs + 1):
-        start = time.time()
-        train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, device)
-        val_loss, val_acc, _, _ = evaluate(model, val_loader, criterion, device)
-        history["train_loss"].append(train_loss)
-        history["val_loss"].append(val_loss)
-        history["train_acc"].append(train_acc)
-        history["val_acc"].append(val_acc)
-        print(f"epoch {epoch}/{args.epochs}  train loss {train_loss:.3f} acc {train_acc:.3f}"
-              f"  |  val loss {val_loss:.3f} acc {val_acc:.3f}  |  {time.time() - start:.0f}s")
-        # validation の正解率が一番良い時点の重みを残す
-        if val_acc > best_acc:
-            best_acc, best_state = val_acc, copy.deepcopy(model.state_dict())
+    history, best_acc = fit(model, train_loader, val_loader, criterion, optimizer, device, args.epochs)
 
     # ③ 結果を確かめる：一番良い重みで、test を1回だけ測る
-    model.load_state_dict(best_state)
     _, test_acc, _, _ = evaluate(model, test_loader, criterion, device)
     print(f"best val acc {best_acc:.3f}  |  test acc {test_acc:.3f}")
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    torch.save({"model_name": args.model, "class_names": class_names, "state_dict": best_state},
+    torch.save({"model_name": args.model, "class_names": class_names, "state_dict": model.state_dict()},
                out / "best.pt")
     history.update(best_val_acc=best_acc, test_acc=test_acc, args=vars(args))
     (out / "history.json").write_text(json.dumps(history, indent=2, ensure_ascii=False), encoding="utf-8")

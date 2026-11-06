@@ -3,6 +3,9 @@
 スライド「学習の進め方の全体像」（p90）、「CNN の学習も、同じ繰り返し」（p76）、
 「推論」（p17）に対応する。
 """
+import copy
+import time
+
 import torch
 
 
@@ -42,6 +45,28 @@ def evaluate(model, loader, criterion, device):
         all_labels.append(labels.cpu())
     preds, labels = torch.cat(all_preds), torch.cat(all_labels)
     return total_loss / count, (preds == labels).float().mean().item(), preds, labels
+
+
+def fit(model, train_loader, val_loader, criterion, optimizer, device, epochs):
+    """epochs 回学習する。1周ごとに validation で測り、一番良かった時点の重みを残す（p90）"""
+    history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
+    best_acc, best_state = 0.0, None
+    for epoch in range(1, epochs + 1):
+        start = time.time()
+        train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, device)
+        val_loss, val_acc, _, _ = evaluate(model, val_loader, criterion, device)
+        history["train_loss"].append(train_loss)
+        history["val_loss"].append(val_loss)
+        history["train_acc"].append(train_acc)
+        history["val_acc"].append(val_acc)
+        print(f"epoch {epoch}/{epochs}  train loss {train_loss:.3f} acc {train_acc:.3f}"
+              f"  |  val loss {val_loss:.3f} acc {val_acc:.3f}  |  {time.time() - start:.0f}s")
+        # validation の正解率が一番良い時点の重みを残す
+        if val_acc > best_acc:
+            best_acc, best_state = val_acc, copy.deepcopy(model.state_dict())
+
+    model.load_state_dict(best_state)  # 一番良かった時点の重みに戻す
+    return history, best_acc
 
 
 @torch.no_grad()

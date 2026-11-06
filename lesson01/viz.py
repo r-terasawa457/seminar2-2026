@@ -7,6 +7,7 @@ from collections import Counter
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 from PIL import ImageOps
@@ -174,6 +175,27 @@ def plot_history(history):
         ax.xaxis.get_major_locator().set_params(integer=True)
         ax.legend()
     plt.show()
+
+
+def print_class_accuracy(preds, labels, class_names, n=5):
+    """クラスごとの正解率を計算し、よく当たったクラスと、よく外れたクラスを n 個ずつ表示する"""
+    accuracy = {}
+    for c in range(len(class_names)):
+        mask = labels == c
+        if mask.any():
+            accuracy[c] = (preds[mask] == c).float().mean().item()
+    order = sorted(accuracy, key=accuracy.get, reverse=True)
+    print("よく当たったクラス（正解率）")
+    for c in order[:n]:
+        print(f"  {accuracy[c]:.2f}  {class_names[c]}")
+    print("よく外れたクラス（正解率）")
+    for c in order[::-1][:n]:
+        print(f"  {accuracy[c]:.2f}  {class_names[c]}")
+
+
+def show_results(results):
+    """実験の結果（設定と正解率）を表にする"""
+    return pd.DataFrame(results)
 
 
 def print_confusions(preds, labels, class_names, n=5):
