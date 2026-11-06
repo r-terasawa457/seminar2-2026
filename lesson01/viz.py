@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
+from IPython.display import display
 from PIL import ImageOps
 
 from data import MEAN, STD
@@ -194,8 +195,26 @@ def print_class_accuracy(preds, labels, class_names, n=5):
 
 
 def show_results(results):
-    """実験の結果（設定と正解率）を表にする"""
-    return pd.DataFrame(results)
+    """実験の結果（設定と正解率）を表にし、学習曲線を並べる
+
+    図の見出しは「#番号 変えた設定」。番号は表の番号と同じ（note は日本語なので、図には出さない）。
+    """
+    display(pd.DataFrame([{k: v for k, v in r.items() if k != "history"} for r in results]))
+    fig, axes = plt.subplots(2, len(results), figsize=(3.2 * len(results), 5.5), squeeze=False)
+    for i, (r, (ax_loss, ax_acc)) in enumerate(zip(results, axes.T)):
+        epochs = range(1, len(r["history"]["train_loss"]) + 1)
+        for ax, key in ((ax_loss, "loss"), (ax_acc, "acc")):
+            ax.plot(epochs, r["history"][f"train_{key}"], "o-", label="train")
+            ax.plot(epochs, r["history"][f"val_{key}"], "o-", label="validation")
+            ax.set_xlabel("epoch")
+            ax.xaxis.get_major_locator().set_params(integer=True)
+        ax_loss.set_title(f"#{i} {r['changes']}", fontsize=9)
+        ax_acc.set_ylim(0, 1)  # 正解率はそろえて比べる（Loss は大きさが違うのでそろえない）
+    axes[0, 0].set_ylabel("loss")
+    axes[1, 0].set_ylabel("accuracy")
+    axes[0, 0].legend()
+    plt.tight_layout()
+    plt.show()
 
 
 def print_confusions(preds, labels, class_names, n=5):
