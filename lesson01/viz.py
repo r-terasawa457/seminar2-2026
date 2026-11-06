@@ -216,6 +216,25 @@ def show_results(results):
     plt.tight_layout()
     plt.show()
 
+    # 正解率を実験ごとに並べる（横軸は表の番号）
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3.5))
+    numbers = list(range(len(results)))
+    for ax, key in zip(axes, ("best_val_acc", "test_acc")):
+        values = [r[key] for r in results]
+        ax.scatter(numbers, values, s=40)
+        for i, v in zip(numbers, values):
+            ax.annotate(f"#{i}", (i, v), textcoords="offset points", xytext=(5, 5), fontsize=9)
+        ax.axhline(results[0][key], color="gray", linestyle="--")
+        ax.text(len(results) - 0.5, results[0][key], "baseline (#0)", color="gray", fontsize=8,
+                ha="right", va="bottom")
+        ax.set_xticks(numbers)
+        ax.set_xlim(-0.5, len(results) - 0.5)
+        ax.set_xlabel("experiment #")
+        ax.set_ylabel(key)
+        ax.set_ylim(0, 1.05)
+    plt.tight_layout()
+    plt.show()
+
 
 def print_confusions(preds, labels, class_names, n=5):
     """間違いが多かった組み合わせ（正解 → 予測）を表示する"""
@@ -250,22 +269,26 @@ def show_mistakes(data, preds, labels, class_names, n=4, reference=None):
 
 
 @torch.no_grad()
-def show_feature_maps(model, image, transform, device, stages=("act1", "layer1", "layer2", "layer3", "layer4"), n=6):
+def show_feature_maps(model, image, transform, device, class_names=None,
+                      stages=("act1", "layer1", "layer2", "layer3", "layer4"), n=6):
     """層ごとの特徴マップを、平均的に強く反応したものから n 枚ずつ表示する（p71）
 
+    その下に、分類ヘッドの中身（平均した後の特徴ベクトルと、クラスごとの確率）を表示する（p74）。
     stages は ResNet 系のモデルの層の名前。
     """
     maps = {}
     hooks = [getattr(model, s).register_forward_hook(lambda m, i, o, s=s: maps.__setitem__(s, o[0].cpu()))
-             for s in stages]
+             for s in (*stages, "global_pool")]
     model.eval()
     x = transform(image.convert("RGB")).unsqueeze(0).to(device)
-    model(x)
+    probs = model(x).softmax(dim=1)[0].cpu()
     for h in hooks:
         h.remove()
 
-    fig, axes = plt.subplots(len(stages), n + 1, figsize=((n + 1) * 1.7, len(stages) * 1.8))
-    for row, s in zip(axes, stages):
+    fig = plt.figure(figsize=((n + 1) * 1.7, (len(stages) + 2) * 1.8))
+    grid = fig.add_gridspec(len(stages) + 2, n + 1)
+    for r, s in enumerate(stages):
+        row = [fig.add_subplot(grid[r, col]) for col in range(n + 1)]
         row[0].imshow(to_image(x[0]))
         top = maps[s].mean(dim=(1, 2)).topk(n).indices
         for ax, c in zip(row[1:], top):
@@ -275,5 +298,23 @@ def show_feature_maps(model, image, transform, device, stages=("act1", "layer1",
             ax.set_yticks([])
         c, h, w = maps[s].shape
         row[0].set_ylabel(f"{s}\n{h}x{w}\n{c} maps", fontsize=9)
+
+    # 分類ヘッド：特徴マップをチャネルごとに平均したベクトル → 全結合と softmax でクラスごとの確率
+    feature = maps["global_pool"]
+    for r, (values, label) in enumerate([(feature, f"global_pool\n{len(feature)}-dim\nvector"),
+                                         (probs, f"fc + softmax\n{len(probs)} classes\nprobability")],
+                                        start=len(stages)):
+        ax_label = fig.add_subplot(grid[r, 0])
+        ax_label.axis("off")
+        ax_label.text(1.0, 0.5, label, ha="right", va="center", fontsize=9, transform=ax_label.transAxes)
+        ax = fig.add_subplot(grid[r, 1:])
+        ax.bar(range(len(values)), values.numpy(), width=1.0)
+        ax.set_xlim(-0.5, len(values) - 0.5)
+        ax.set_xlabel("channel" if values is feature else "class")
+    if class_names is not None:  # 確率の高い3クラスに名前を付ける
+        for i in probs.topk(3).indices:
+            ax.annotate(class_names[i], (int(i), probs[i].item()), textcoords="offset points",
+                        xytext=(0, 3), ha="center", fontsize=8)
+        ax.set_ylim(0, min(1.0, probs.max().item() * 1.25))
     plt.tight_layout()
     plt.show()
