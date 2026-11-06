@@ -4,9 +4,7 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 
 | 回 | フォルダ | 内容 | Colabで開く |
 | --- | --- | --- | --- |
-| 第1回 | `lesson01/` | 犬と猫の写真の分類（CNN、転移学習） | [開く](https://colab.research.google.com/github/OWNER/seminar2-2026/blob/main/lesson01/01_image_classification.ipynb) |
-
-上のリンクの `OWNER` は、公開後に置き換えてください。
+| 第1回 | `lesson01/` | 犬と猫の写真の分類（CNN、転移学習） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification.ipynb) |
 
 ## 使い方
 
