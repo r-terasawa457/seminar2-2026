@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
+from PIL import ImageOps
 
 from data import MEAN, STD
 
@@ -90,10 +91,11 @@ def print_feature_shapes(model, device, image_size=224):
     """層を通るごとに、特徴マップの形がどう変わるかを表示する（p69〜70）"""
     model.eval()
     x = torch.zeros(1, 3, image_size, image_size, device=device)
-    print(f"{'input':12s} {tuple(x.shape[1:])}")
+    print(f"{'name':12s} {'output shape (C, H, W)':24s} type")
+    print(f"{'input':12s} {str(tuple(x.shape[1:])):24s}")
     for name, module in model.named_children():
         x = module(x)
-        print(f"{name:12s} {str(tuple(x.shape[1:])):18s} {type(module).__name__}")
+        print(f"{name:12s} {str(tuple(x.shape[1:])):24s} {type(module).__name__}")
 
 
 def show_kernels(model, n=64):
@@ -125,17 +127,38 @@ def show_probs(probs, class_names, k=10, true_label=None):
     plt.show()
 
 
-def show_prediction(image, probs, class_names, k=5):
-    """画像と、上位 k クラスの確率を並べて表示する（推論。p17）"""
+def class_examples(reference):
+    """クラスの番号ごとに、見本にする1件の位置を返す（各クラスの最初の1件）"""
+    first = {}
+    for i, label in enumerate(reference["label"]):
+        first.setdefault(label, i)
+    return first
+
+
+def show_prediction(image, probs, class_names, k=5, reference=None):
+    """画像と、上位 k クラスの確率を並べて表示する（推論。p17）
+
+    reference（データセット）を渡すと、下の段に上位のクラスの見本の画像を並べる。
+    """
     top = probs.topk(min(k, len(class_names)))
-    fig, axes = plt.subplots(1, 2, figsize=(10, 3.5), gridspec_kw={"width_ratios": [1, 1.4]})
-    axes[0].imshow(image.convert("RGB"))
-    axes[0].axis("off")
     names = [class_names[i] for i in top.indices]
+    fig = plt.figure(figsize=(12, 3.5 if reference is None else 6.5), layout="constrained")
+    # 上の段（入力と確率）と下の段（見本）を別の領域にして、列の幅が互いに影響しないようにする
+    top_fig, bottom_fig = fig.subfigures(2, 1, height_ratios=[1.2, 1]) if reference is not None else (fig, None)
+    axes = top_fig.subplots(1, 2, width_ratios=[1, 1.4])
+    axes[0].imshow(image.convert("RGB"))
+    axes[0].set_title("input")
+    axes[0].axis("off")
     axes[1].barh(names[::-1], top.values.numpy()[::-1])
     axes[1].set_xlim(0, 1)
     axes[1].set_xlabel("probability")
-    plt.tight_layout()
+    if reference is not None:
+        examples = class_examples(reference)
+        for ax, p, i in zip(bottom_fig.subplots(1, len(names)), top.values, top.indices):
+            # 大きさをそろえるため、中央を正方形に切り抜く
+            ax.imshow(ImageOps.fit(reference[examples[int(i)]]["image"].convert("RGB"), (224, 224)))
+            ax.set_title(f"{class_names[i]}\n{p.item():.1%}", fontsize=9)
+            ax.axis("off")
     plt.show()
 
 
@@ -160,16 +183,27 @@ def print_confusions(preds, labels, class_names, n=5):
         print(f"  {count:3d}  {true_name} -> {pred_name}")
 
 
-def show_mistakes(data, preds, labels, class_names, n=8):
-    """間違えた画像を、正解と予測を付けて並べる"""
-    wrong = np.flatnonzero((preds != labels).numpy())[:n]
-    fig, axes = plt.subplots(2, (n + 1) // 2, figsize=(12, 6.5))
-    for ax in axes.flat:
-        ax.axis("off")
-    for ax, i in zip(axes.flat, wrong):
-        i = int(i)
-        ax.imshow(data[i]["image"].convert("RGB"))
-        ax.set_title(f"true: {class_names[labels[i]]}\npred: {class_names[preds[i]]}", fontsize=9)
+def show_mistakes(data, preds, labels, class_names, n=4, reference=None):
+    """間違いが多かった組み合わせ（正解 → 予測）から1枚ずつ、間違えた画像を表示する
+
+    reference（データセット）を渡すと、右に正解のクラスと予測したクラスの見本の画像を並べる。
+    """
+    pairs = Counter((t, p) for t, p in zip(labels.tolist(), preds.tolist()) if t != p)
+    rows = [int(np.flatnonzero(((labels == t) & (preds == p)).numpy())[0]) for (t, p), _ in pairs.most_common(n)]
+    cols = 1 if reference is None else 3
+    fig, axes = plt.subplots(len(rows), cols, figsize=(3.3 * cols, 3 * len(rows)), squeeze=False)
+    examples = None if reference is None else class_examples(reference)
+    for row, i in zip(axes, rows):
+        t, p = int(labels[i]), int(preds[i])
+        row[0].imshow(data[i]["image"].convert("RGB"))
+        row[0].set_title(f"test image\ntrue: {class_names[t]}\npred: {class_names[p]}", fontsize=9)
+        if reference is not None:
+            row[1].imshow(reference[examples[t]]["image"].convert("RGB"))
+            row[1].set_title(f"example of true class\n{class_names[t]}", fontsize=9, color="tab:green")
+            row[2].imshow(reference[examples[p]]["image"].convert("RGB"))
+            row[2].set_title(f"example of predicted class\n{class_names[p]}", fontsize=9, color="tab:red")
+        for ax in row:
+            ax.axis("off")
     plt.tight_layout()
     plt.show()
 
