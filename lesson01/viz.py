@@ -23,7 +23,7 @@ def to_image(tensor, mean=MEAN, std=STD):
 
 
 def show_samples(data, class_names, names=None, n=8):
-    """クラスごとに1枚ずつ、見本の画像を並べる（p82）。names は大文字と小文字を区別しない"""
+    """クラスごとに1枚ずつ、見本の画像を並べる（p90）。names は大文字と小文字を区別しない"""
     lower = [c.lower() for c in class_names]
     labels = [lower.index(name.lower()) for name in names] if names else \
         list(range(0, len(class_names), max(1, len(class_names) // n)))[:n]
@@ -43,7 +43,7 @@ def show_samples(data, class_names, names=None, n=8):
 
 
 def show_example(sample, class_names):
-    """データ1件（画像と正解ラベルの組）を表示する（p83）"""
+    """データ1件（画像と正解ラベルの組）を表示する（p91）"""
     image = sample["image"]
     plt.figure(figsize=(4, 4))
     plt.imshow(image.convert("RGB"))
@@ -53,7 +53,7 @@ def show_example(sample, class_names):
 
 
 def show_preprocess(image, transform):
-    """前処理の前と後を並べる（p85）"""
+    """前処理の前と後を並べる（p93）"""
     x = transform(image.convert("RGB"))
     fig, axes = plt.subplots(1, 2, figsize=(9, 4))
     axes[0].imshow(image.convert("RGB"))
@@ -66,7 +66,7 @@ def show_preprocess(image, transform):
 
 
 def show_augmentations(image, transform, n=6):
-    """同じ画像にデータ拡張を何回かかけて並べる（p86）"""
+    """同じ画像にデータ拡張を何回かかけて並べる（p94）"""
     fig, axes = plt.subplots(1, n + 1, figsize=(2.2 * (n + 1), 2.6))
     axes[0].imshow(image.convert("RGB"))
     axes[0].set_title("original")
@@ -79,7 +79,7 @@ def show_augmentations(image, transform, n=6):
 
 
 def show_batch(batch, class_names, n=8):
-    """mini-batch の中身を、先頭から n 枚表示する（p90）"""
+    """mini-batch の中身を、先頭から n 枚表示する（p98）"""
     fig, axes = plt.subplots(1, n, figsize=(2 * n, 2.4))
     for ax, x, label in zip(axes, batch["image"], batch["label"]):
         ax.imshow(to_image(x))
@@ -90,7 +90,7 @@ def show_batch(batch, class_names, n=8):
 
 @torch.no_grad()
 def print_feature_shapes(model, device, image_size=224):
-    """層を通るごとに、特徴マップの形がどう変わるかを表示する（p67〜68）"""
+    """層を通るごとに、特徴マップの形がどう変わるかを表示する（p72、p78）"""
     model.eval()
     x = torch.zeros(1, 3, image_size, image_size, device=device)
     print(f"{'name':12s} {'output shape (C, H, W)':24s} type")
@@ -101,7 +101,7 @@ def print_feature_shapes(model, device, image_size=224):
 
 
 def show_kernels(model, n=64):
-    """最初の畳み込み層のカーネルを並べる。1枚ごとに最小が黒、最大が白（p63）"""
+    """最初の畳み込み層のカーネルを並べる。1枚ごとに最小が黒、最大が白（p60）"""
     conv = next(m for m in model.modules() if isinstance(m, nn.Conv2d))
     w = conv.weight.detach().cpu()[:n].permute(0, 2, 3, 1).numpy()
     cols = 8
@@ -117,7 +117,7 @@ def show_kernels(model, n=64):
 
 
 def show_probs(probs, class_names, k=10, true_label=None):
-    """各クラスの確率を、上位 k 個の棒グラフで表示する（p72、p97）"""
+    """各クラスの確率を、上位 k 個の棒グラフで表示する（p82、p105）"""
     top = probs.topk(min(k, len(class_names)))
     names = [class_names[i] for i in top.indices]
     colors = ["tab:red" if i == true_label else "tab:blue" for i in top.indices]
@@ -138,7 +138,7 @@ def class_examples(reference):
 
 
 def show_prediction(image, probs, class_names, k=5, reference=None):
-    """画像と、上位 k クラスの確率を並べて表示する（推論。p17）
+    """画像と、上位 k クラスの確率を並べて表示する（推論。p16）
 
     reference（データセット）を渡すと、下の段に上位のクラスの見本の画像を並べる。
     """
@@ -165,7 +165,7 @@ def show_prediction(image, probs, class_names, k=5, reference=None):
 
 
 def plot_history(history):
-    """epoch ごとの Loss と正解率を、train と validation で比べる（p95〜96）"""
+    """epoch ごとの Loss と正解率を、train と validation で比べる（p103〜104）"""
     epochs = range(1, len(history["train_loss"]) + 1)
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.5))
     for ax, key in zip(axes, ("loss", "acc")):
@@ -271,9 +271,9 @@ def show_mistakes(data, preds, labels, class_names, n=4, reference=None):
 @torch.no_grad()
 def show_feature_maps(model, image, transform, device, class_names=None,
                       stages=("act1", "layer1", "layer2", "layer3", "layer4"), n=6):
-    """層ごとの特徴マップを、平均的に強く反応したものから n 枚ずつ表示する（p69）
+    """層ごとの特徴マップを、平均的に強く反応したものから n 枚ずつ表示する（p71）
 
-    その下に、分類ヘッドの中身（平均した後の特徴ベクトルと、クラスごとの確率）を表示する（p72）。
+    その下に、分類ヘッドの中身（平均した後の特徴ベクトルと、クラスごとの確率）を表示する（p80〜82）。
     stages は ResNet 系のモデルの層の名前。
     """
     maps = {}

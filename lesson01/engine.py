@@ -1,7 +1,7 @@
 """学習、評価、推論
 
-スライド「学習の進め方の全体像」（p88）、「分類モデルの学習も、同じ繰り返し」（p74）、
-「推論」（p17）に対応する。
+スライド「学習の進め方の全体像」（p96）、「分類モデルの学習も、同じ繰り返し」（p85）、
+「推論」（p16）に対応する。
 """
 import copy
 import time
@@ -10,7 +10,7 @@ import torch
 
 
 def train_one_epoch(model, loader, criterion, optimizer, device):
-    """train を1周（1 epoch）学習する。mini-batch ごとに θ を1回更新する（p88〜90）"""
+    """train を1周（1 epoch）学習する。mini-batch ごとに θ を1回更新する（p96〜98）"""
     model.train()
     total_loss, correct, count = 0.0, 0, 0
     for batch in loader:
@@ -31,7 +31,7 @@ def train_one_epoch(model, loader, criterion, optimizer, device):
 
 @torch.no_grad()
 def evaluate(model, loader, criterion, device):
-    """θ を更新せずに、Loss と正解率を測る（validation、test。p84）"""
+    """θ を更新せずに、Loss と正解率を測る（validation、test。p92）"""
     model.eval()
     total_loss, count = 0.0, 0
     all_preds, all_labels = [], []
@@ -48,7 +48,7 @@ def evaluate(model, loader, criterion, device):
 
 
 def fit(model, train_loader, val_loader, criterion, optimizer, device, epochs):
-    """epochs 回学習する。1周ごとに validation で測り、一番良かった時点の重みを残す（p88）"""
+    """epochs 回学習する。1周ごとに validation で測り、一番良かった時点の重みを残す（p96）"""
     history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
     best_acc, best_state = 0.0, None
     for epoch in range(1, epochs + 1):
@@ -71,7 +71,7 @@ def fit(model, train_loader, val_loader, criterion, optimizer, device, epochs):
 
 @torch.no_grad()
 def predict(model, image, transform, device):
-    """1枚の画像（PIL）を入力し、各クラスの確率を返す（推論。p17、p72）"""
+    """1枚の画像（PIL）を入力し、各クラスの確率を返す（推論。p16、p82）"""
     model.eval()
     x = transform(image.convert("RGB")).unsqueeze(0).to(device)  # 1枚だけの mini-batch にする
     return model(x).softmax(dim=1)[0].cpu()
