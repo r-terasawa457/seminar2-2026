@@ -28,6 +28,11 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 
 | アセット | 取得元 | ライセンス |
 | --- | --- | --- |
-| Oxford-IIIT Pet | HF Hub [`timm/oxford-iiit-pet`](https://huggingface.co/datasets/timm/oxford-iiit-pet) | CC BY-SA 4.0（HF Hub の表示による） |
-| ResNet-18 学習済み重み | HF Hub [`timm/resnet18.a1_in1k`](https://huggingface.co/timm/resnet18.a1_in1k) | Apache-2.0（HF Hub の表示による） |
-| `lesson01/assets/chelsea.png`、`coffee.png` | scikit-image の `data.chelsea()`、`data.coffee()` を書き出したもの | CC0（scikit-image のデータ一覧を公開前に再確認） |
+| Oxford-IIIT Pet | HF Hub [`timm/oxford-iiit-pet`](https://huggingface.co/datasets/timm/oxford-iiit-pet)（原典：[Oxford VGG](https://www.robots.ox.ac.uk/~vgg/data/pets/)） | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。画像の著作権は元の撮影者にある |
+| ResNet-18 学習済み重み | HF Hub [`timm/resnet18.a1_in1k`](https://huggingface.co/timm/resnet18.a1_in1k)（ImageNet-1k で学習） | Apache-2.0 |
+| `lesson01/assets/chelsea.png` | scikit-image の `data.chelsea()` を書き出したもの（撮影 Stefan van der Walt） | CC0 |
+| `lesson01/assets/coffee.png` | scikit-image の `data.coffee()` を書き出したもの（撮影 Rachel Michetti、Pikolo Espresso Bar の提供） | CC0 |
+
+ライセンスは各配布元の表示による（2026-11-10 確認）。
+
+Oxford-IIIT Pet の出典：O. M. Parkhi, A. Vedaldi, A. Zisserman, C. V. Jawahar, "Cats and Dogs," IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2012.
