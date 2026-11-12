@@ -21,7 +21,7 @@ from models import build_model
 
 
 def parse_args():
-    # 人間が決める学習の設定（ハイパーパラメータ。p99）
+    # 人間が決める学習の設定（ハイパーパラメータ。p97）
     parser = argparse.ArgumentParser(description="画像分類モデルを学習する")
     parser.add_argument("--model", default="resnet18.a1_in1k", help="timm のモデル名")
     parser.add_argument("--no-pretrained", action="store_true", help="学習済みの重みを使わない")

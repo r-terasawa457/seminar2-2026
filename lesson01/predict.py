@@ -1,4 +1,4 @@
-"""学習した重みで、画像のクラスを予測する（推論。p16）
+"""学習した重みで、画像のクラスを予測する（推論。p15）
 
 例:
     python predict.py outputs/best.pt assets/chelsea.png assets/coffee.png
