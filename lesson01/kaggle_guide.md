@@ -24,13 +24,14 @@ Colab で GPU が使えないとき（GPU の割り当てがない、使える�
 
 ## 3. ノートブックを開く
 
-1. 左上の **Create** → **New Notebook** で、新しいノートブックを開きます。
-2. 上のメニューの **File** → **Import Notebook** を選びます。
-3. 次のどちらかで取り込みます。
-   - **リンクから**：次の URL を貼り付けます。
-     `https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb`
-   - **ファイルから**：上の URL を開き、右上のダウンロードのボタンで `.ipynb` を保存してから、そのファイルを選びます。
-4. 取り込むと、ノートブックの中身が置き換わります。左上の題名を「seminar2 lesson01」などに変えておくと、あとで探しやすくなります。
+1. Kaggle にログインした状態で、次の URL を開きます（リポジトリの README の「Kaggleで開く」のリンクと同じ）。Kaggle 版のノートブックが、Kaggle の編集画面で開きます。
+   `https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb`
+   - ログインしていないと「Sign In or Register to continue editing」と表示され、実行できません。右上の **Sign in** からログインします。
+2. 開いたノートブックは、自分のノートブックの下書きとして保存されます（題名の横に「Draft saved」と表示されます）。左上の題名（`notebook` で始まる名前）を「seminar2 lesson01」などに変えておくと、あとで探しやすくなります。
+3. 次からは、Kaggle の左のメニューの **Code** → **Your Work** から開けます。URL をもう一度開くと、別の新しいノートブックができます。
+
+URL で開けないときは、**Create** → **New Notebook** で新しいノートブックを作り、**File** → **Import Notebook** で、次の URL（GitHub のノートブック）を貼り付けて取り込みます。
+`https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb`
 
 ノートブックは、作った時点では自分だけが見られる設定（Private）です。公開する必要はありません。
 
@@ -90,7 +91,7 @@ device: cuda Tesla T4
 
 Kaggle では、手元の画像を「データセット」としてアップロードして使います。
 
-1. 右側の欄の **Input** → **Add Input** → **Upload**（＋ のボタン）を選びます。
+1. 右側の欄の **Input** にある **Upload** のボタン（または **Add Input** → **Upload**）を選びます。
 2. 画像（または画像をまとめたフォルダ、zip）を選び、データセットの名前を付けて作ります。公開する必要はありません（Private のままでよい）。
 3. 作ったデータセットが **Input** に表示されます。その中のフォルダの場所（`/kaggle/input/` で始まる）をコピーします。項目の横のコピーのボタンを押すか、セルで `!ls /kaggle/input` を実行すると分かります。
 4. 使い方：
