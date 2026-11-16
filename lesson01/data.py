@@ -1,6 +1,6 @@
 """データを用意する：読み込み、3つへの分割、前処理、データ拡張、mini-batch
 
-スライド「画像分類の実践 ① データを用意する」（p88〜92）と mini-batch（p96）に対応する。
+スライド「画像分類の実践 ① データを用意する」（p91〜95）と mini-batch（p99）に対応する。
 """
 from functools import partial
 
@@ -14,13 +14,13 @@ DATASET_ID = "timm/oxford-iiit-pet"
 DATASET_REVISION = "089695c834a7deb60505b7cc506672db1c31a6aa"
 
 IMAGE_SIZE = 224
-# 学習済みモデルを ImageNet で学習したときの平均と標準偏差（p91）
+# 学習済みモデルを ImageNet で学習したときの平均と標準偏差（p94）
 MEAN = IMAGENET_DEFAULT_MEAN
 STD = IMAGENET_DEFAULT_STD
 
 
 def load_splits(seed=0, image_dir=None, max_train=None, max_test=None):
-    """データセットを読み込み、train / validation / test の3つに分ける（p88、p90）
+    """データセットを読み込み、train / validation / test の3つに分ける（p91、p93）
 
     image_dir を指定すると、フォルダ名をクラス名として自分の画像を読み込む。
     """
@@ -46,7 +46,7 @@ def load_splits(seed=0, image_dir=None, max_train=None, max_test=None):
 
 
 def build_transforms(image_size=IMAGE_SIZE, mean=MEAN, std=STD):
-    """前処理（p91）とデータ拡張（p92）を作る。学習用と評価用の2つを返す"""
+    """前処理（p94）とデータ拡張（p95）を作る。学習用と評価用の2つを返す"""
     normalize = transforms.Normalize(mean, std)
     # 評価用：大きさをそろえて（縮小して中央を切り抜く）、値の範囲をそろえる
     eval_transform = transforms.Compose([
@@ -73,6 +73,6 @@ def _apply(batch, transform):
 
 
 def make_loader(data, transform, batch_size, shuffle, num_workers=0):
-    """画像をテンソルに変換し、batch_size 枚ずつ束ねて取り出す（p96）"""
+    """画像をテンソルに変換し、batch_size 枚ずつ束ねて取り出す（p99）"""
     return DataLoader(data.with_transform(partial(_apply, transform=transform)),
                       batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
