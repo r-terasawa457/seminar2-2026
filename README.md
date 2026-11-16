@@ -5,7 +5,7 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 | 回 | フォルダ | 内容 | Colabで開く | Kaggleで開く |
 | --- | --- | --- | --- | --- |
 | 第1回 | `lesson01/` | 犬と猫の写真の分類（CNN、転移学習） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb) |
-| 第1回（ダイジェスト版） | `lesson01/` | 本編の要点だけを短時間で動かす（約35分）。プログラミングや機械学習に慣れていない人向け | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest_kaggle.ipynb) |
+| 第1回（ダイジェスト版） | `lesson01/` | 第1回の要点を短時間で動かす（約35分）。プログラミングや機械学習に慣れていない人向け | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest_kaggle.ipynb) |
 
 ## 使い方
 
