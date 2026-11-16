@@ -5,6 +5,7 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 | 回 | フォルダ | 内容 | Colabで開く | Kaggleで開く |
 | --- | --- | --- | --- | --- |
 | 第1回 | `lesson01/` | 犬と猫の写真の分類（CNN、転移学習） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb) |
+| 第1回（ダイジェスト版） | `lesson01/` | 本編の要点だけを短時間で動かす（約35分）。プログラミングや機械学習に慣れていない人向け | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest_kaggle.ipynb) |
 
 ## 使い方
 
@@ -22,6 +23,8 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 | --- | --- |
 | `01_image_classification.ipynb` | 本編。スライドと対応した節に分けて、学習を1つずつ動かす |
 | `01_image_classification_kaggle.ipynb` | Kaggle 版（Colab で GPU が使えないときの予備）。中身は本編と同じで、実行環境の説明と自分の画像を入れるセルだけが違う |
+| `01_image_classification_digest.ipynb` | ダイジェスト版。本編の要点（データ、学習の4行を1回だけ動かす、学習と結果、設定を1つ変えた比較）だけを、関数の定義を書かずに動かす |
+| `01_image_classification_digest_kaggle.ipynb` | ダイジェスト版の Kaggle 版 |
 | `colab_guide.md` | Colab で動かす手順 |
 | `kaggle_guide.md` | Kaggle で動かす手順（アカウントの登録から） |
 | `data.py` | データの読み込み、train / validation / test への分割、前処理、データ拡張、DataLoader |
