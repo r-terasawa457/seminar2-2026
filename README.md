@@ -62,18 +62,7 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 | `02_vit_classification.ipynb` | おまけ。ViT-B/16 で37品種を分類し、ResNet-18 と test の正解率と時間を比べる（timm）。第1回の `data.py`、`engine.py`、`models.py` を使う。ログインや Google ドライブの許可は不要 |
 | `02_run_github_code.ipynb` | 発展。GitHub のリポジトリを取得し、README に沿って依存ライブラリと重みをそろえ、公式の例を動かす |
 | `guide.md` | リポジトリの選び方、README の読み方、変更の残し方、つまずいたときの対処 |
-| `demos/` | 演習 1-b のデモ。言葉で分類（CLIP）、言葉で探す（OWLv2）、写真に質問（Qwen3-VL）、奥行き（Depth Anything V2）、言葉で切り抜く（OWLv2＋SAM 2）。どれもログイン不要 |
-| `server/` | 演習 1-a 用。同じモデルを研究用 PC の Web サーバーで動かし、学内 LAN のブラウザから使う（講師用） |
-
-演習 1-b のデモ（どれもログイン不要。GPU を選んで上から実行する）：
-
-| 題材 | 内容 | Colabで開く |
-| --- | --- | --- |
-| CLIP | 言葉で分類する | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo1_zero_shot_classification.ipynb) |
-| OWLv2 | 言葉で物を探す | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo2_zero_shot_detection.ipynb) |
-| Qwen3-VL | 写真に質問する | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo3_vision_language.ipynb) |
-| Depth Anything V2 | 奥行きを推定する | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo4_depth.ipynb) |
-| OWLv2＋SAM 2 | 言葉で切り抜く | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo5_text_segmentation.ipynb) |
+| `server/` | 講師用。CLIP、OWLv2、Qwen3-VL、Depth Anything V2、SAM 2 を研究用 PC の Web サーバーで動かし、学内 LAN のブラウザから使う |
 
 `02_vit_classification.ipynb` は、HF Hub の重み [`timm/resnet18.a1_in1k`](https://huggingface.co/timm/resnet18.a1_in1k) と [`timm/vit_base_patch16_224.augreg2_in21k_ft_in1k`](https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)（どちらも Apache-2.0）と、第1回と同じ Oxford-IIIT Pet を使います。
 
