@@ -1,0 +1,6 @@
+# torch は GPU と CUDA に合わせて先に入れる（README を参照）
+transformers>=5.0
+accelerate
+gradio>=6.0
+numpy
+pillow
