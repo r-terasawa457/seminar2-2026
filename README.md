@@ -2,19 +2,26 @@
 
 Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフォルダを分けています。Colab で GPU が使えないときは、Kaggle でも動かせます（第1回）。
 
-第2回の教材は `lesson02` ブランチにあります。下の表の第2回のリンクは、このブランチのノートブックを開きます。
+## 第1回（`lesson01/`）
 
-| 回 | フォルダ | 内容 | Colabで開く | Kaggleで開く |
-| --- | --- | --- | --- | --- |
-| 第1回 | `lesson01/` | 犬と猫の写真の分類（CNN、転移学習） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb) |
-| 第1回（ダイジェスト版） | `lesson01/` | 第1回の要点を短時間で動かす。プログラミングや機械学習に慣れていない人向け | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest_kaggle.ipynb) |
-| 第2回 | `lesson02/` | 写真1枚から奥行きを推定する（Depth Anything V2）。手法、例の画像、自分の画像、設定を変える、活用（背景ぼかし、霧、3次元） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_depth_anything_v2.ipynb) | — |
-| 第2回 | `lesson02/` | 写真の中の物を切り抜く（SAM 2）。点・枠・言葉で指定、全自動、活用（背景の差し替え、数えて測る、動画で追う） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_sam2_segmentation.ipynb) | — |
-| 第2回 | `lesson02/` | 画像と文章の類似度で分類・検索する（CLIP）。ゼロショット分類、第1回の37品種を学習なしで解く、活用（文章で画像を検索、似た画像を検索） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_clip.ipynb) | — |
-| 第2回 | `lesson02/` | ViT のパッチ特徴で画像の部分を比べる（DINOv2）。主成分分析で特徴を色で見る、似たパッチ・対応点を探す、前景の切り出し、少ない枚数で分類 | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_dinov2.ipynb) | — |
-| 第2回 | `lesson02/` | 画像を見て質問に答える（VLM：Qwen3-VL-2B）。画像トークン、次のトークンの確率と温度、もっともらしい誤り、活用（位置の枠、まとめて表にする） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_vlm.ipynb) | — |
-| 第2回（おまけ） | `lesson02/` | ViT で分類して、第1回の ResNet-18 と比べる（同じデータ・同じ学習の進め方で、モデルだけを変える） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_vit_classification.ipynb) | — |
-| 第2回（発展） | `lesson02/` | GitHub で公開されたコードを Colab で動かす（記入例：Depth Anything V2） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_run_github_code.ipynb) | — |
+| 題材 | 内容 | Colabで開く | Kaggleで開く |
+| --- | --- | --- | --- |
+| ResNet-18 | 犬と猫の写真の分類（CNN、転移学習） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_kaggle.ipynb) |
+| ResNet-18（ダイジェスト版） | 第1回の要点を短時間で動かす。プログラミングや機械学習に慣れていない人向け | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest.ipynb) | [開く](https://kaggle.com/kernels/welcome?src=https://github.com/r-terasawa457/seminar2-2026/blob/main/lesson01/01_image_classification_digest_kaggle.ipynb) |
+
+## 第2回（`lesson02/`）
+
+第2回の教材は `lesson02` ブランチにあります。下のリンクは、このブランチのノートブックを開きます。
+
+| 題材 | 内容 | Colabで開く |
+| --- | --- | --- |
+| Depth Anything V2 | 写真1枚から奥行きを推定する。手法、例の画像、自分の画像、設定を変える、活用（背景ぼかし、霧、3次元） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_depth_anything_v2.ipynb) |
+| SAM 2 | 写真の中の物を切り抜く。点・枠・言葉で指定、全自動、活用（背景の差し替え、数えて測る、動画で追う） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_sam2_segmentation.ipynb) |
+| CLIP | 画像と文章の類似度で分類・検索する。ゼロショット分類、第1回の37品種を学習なしで解く、活用（文章で画像を検索、似た画像を検索） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_clip.ipynb) |
+| DINOv2 | ViT のパッチ特徴で画像の部分を比べる。主成分分析で特徴を色で見る、似たパッチ・対応点を探す、前景の切り出し、少ない枚数で分類 | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_dinov2.ipynb) |
+| VLM（Qwen3-VL-2B） | 画像を見て質問に答える。画像トークン、次のトークンの確率と温度、もっともらしい誤り、活用（位置の枠、まとめて表にする） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_vlm.ipynb) |
+| ViT-B/16（おまけ） | ViT で分類して、第1回の ResNet-18 と比べる（同じデータ・同じ学習の進め方で、モデルだけを変える） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_vit_classification.ipynb) |
+| GitHub のコード（発展） | GitHub で公開されたコードを Colab で動かす（記入例：Depth Anything V2） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/02_run_github_code.ipynb) |
 
 ## 使い方
 
@@ -60,13 +67,13 @@ Google Colaboratory で動かす PyTorch の実践教材です。回ごとにフ
 
 演習 1-b のデモ（どれもログイン不要。GPU を選んで上から実行する）：
 
-| デモ | 内容 | Colabで開く |
+| 題材 | 内容 | Colabで開く |
 | --- | --- | --- |
-| `demos/demo1_zero_shot_classification.ipynb` | 言葉で分類する（CLIP） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo1_zero_shot_classification.ipynb) |
-| `demos/demo2_zero_shot_detection.ipynb` | 言葉で物を探す（OWLv2） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo2_zero_shot_detection.ipynb) |
-| `demos/demo3_vision_language.ipynb` | 写真に質問する（Qwen3-VL） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo3_vision_language.ipynb) |
-| `demos/demo4_depth.ipynb` | 奥行きを推定する（Depth Anything V2） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo4_depth.ipynb) |
-| `demos/demo5_text_segmentation.ipynb` | 言葉で切り抜く（OWLv2＋SAM 2） | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo5_text_segmentation.ipynb) |
+| CLIP | 言葉で分類する | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo1_zero_shot_classification.ipynb) |
+| OWLv2 | 言葉で物を探す | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo2_zero_shot_detection.ipynb) |
+| Qwen3-VL | 写真に質問する | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo3_vision_language.ipynb) |
+| Depth Anything V2 | 奥行きを推定する | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo4_depth.ipynb) |
+| OWLv2＋SAM 2 | 言葉で切り抜く | [開く](https://colab.research.google.com/github/r-terasawa457/seminar2-2026/blob/lesson02/lesson02/demos/demo5_text_segmentation.ipynb) |
 
 `02_vit_classification.ipynb` は、HF Hub の重み [`timm/resnet18.a1_in1k`](https://huggingface.co/timm/resnet18.a1_in1k) と [`timm/vit_base_patch16_224.augreg2_in21k_ft_in1k`](https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)（どちらも Apache-2.0）と、第1回と同じ Oxford-IIIT Pet を使います。
 
